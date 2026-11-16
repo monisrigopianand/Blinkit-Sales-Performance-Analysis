@@ -1,44 +1,68 @@
-
 # Blinkit Sales & Outlet Performance Analysis
 
-## Project Overview
-
-An end-to-end retail data analytics project analyzing **1.20M in total sales value** across **8,523 product-outlet records** using **Excel**, **SQL Server (T-SQL)**, and **Power BI**.
+An end-to-end retail analytics project using **Excel, SQL Server and Power BI** to analyze product and outlet sales performance.
 
 ![Blinkit Sales Dashboard](dashboard_preview.png)
 
-## Key Business Insights
+## Project Overview
 
-- **Overall Performance:** Analyzed **1.20M** in total sales value across **8,523 product-outlet records**, with an average sales value of **140.99 per record** and an average customer rating of **3.97/5.0**.
-- **Top Product Categories:** **Fruits & Vegetables (178.1K)** and **Snack Foods (175.4K)** recorded the highest sales among the 16 product categories.
-- **Fat Content Analysis:** **Low Fat** products contributed **64.6% (776.3K)** of total sales value, compared with **35.4% (425.4K)** from Regular products.
-- **Outlet Performance:** **Supermarket Type 1** accounted for **65.5% (787.5K)** of total sales value across 5,577 records. Outlets established in **2018** recorded the highest cumulative sales (**204.5K**) among the establishment-year groups.
+This project analyzes 8,523 product-outlet sales records (12 columns) to understand how sales vary across product categories, fat content, outlet types, outlet sizes and outlet establishment years. The findings are presented in an interactive Power BI dashboard.
 
-## Tools & Workflow
+## Tools and Technologies
 
-- **Excel:** Standardized inconsistent categorical labels, retained records with missing weight values, and performed duplicate-record checks.
-- **SQL Server (T-SQL):** Developed analytical queries using `GROUP BY`, `CASE WHEN`, and window functions to examine sales trends and key performance indicators.
-- **Power BI:** Created an interactive dashboard featuring DAX measures (`Total_Sales`, `Avg_Sales`, `No_of_Items`, `Avg_Rating`), interactive slicers, and outlet performance visualizations.
+- **Microsoft Excel / WPS Office:** data inspection and cleaning
+- **SQL Server (SSMS) and T-SQL:** database storage and exploratory analysis
+- **Power BI and DAX:** measures, KPIs and interactive dashboard
 
-## Repository Structure
+## Workflow
 
-```text
-Blinkit-Sales-Analysis/
-│
-├── blinkit_cleaned.csv
-├── blinkit_analysis.sql
-├── blinkit_sales_dashboard.pbix
-├── dashboard_preview.png
-└── README.md
-```
+1. **Data cleaning (Excel):** standardized inconsistent Item_Fat_Content labels (LF, low fat, reg), kept records with missing Item_Weight, and checked for fully duplicated rows across all 12 columns (none found).
+2. **Database loading (SQL Server):** imported the cleaned CSV into a `blinkit_sales` table and verified the row count.
+3. **Exploratory analysis (SQL):** wrote 8 T-SQL queries (1 row-count validation and 7 analytical queries) using aggregation, GROUP BY, PIVOT and window functions.
+4. **Dashboard (Power BI):** created 4 explicit DAX measures, KPI cards, slicers and 4 analytical visuals.
 
-| File | Description |
+## DAX Measures
+
+| Measure | Expression |
 |---|---|
-| `blinkit_cleaned.csv` | Cleaned retail dataset containing 8,523 product-outlet records |
-| `blinkit_analysis.sql` | SQL queries for exploratory analysis and KPI evaluation |
-| `blinkit_sales_dashboard.pbix` | Interactive Power BI report |
-| `dashboard_preview.png` | Visual preview of the Power BI dashboard |
+| Total Sales | `SUM(blinkit_sales[Sales])` |
+| Average Sales | `AVERAGE(blinkit_sales[Sales])` |
+| Number of Records | `COUNTROWS(blinkit_sales)` |
+| Average Rating | `AVERAGE(blinkit_sales[Rating])` |
 
-## Project Objective
+## Dashboard
 
-To transform retail sales data into meaningful business insights through data cleaning, SQL-based analysis, and interactive visualization, enabling a better understanding of product and outlet performance.
+- **KPI cards:** Total Sales, Average Sales, Number of Records, Average Rating
+- **Slicers:** Outlet Location Type, Outlet Size, Item Type
+- **Visuals:** donut chart (sales by fat content), bar chart (sales by item type), line chart (sales by outlet establishment year), matrix (outlet performance)
+
+## Key Findings
+
+| Metric | Result |
+|---|---:|
+| Total Sales | 1.20 Million |
+| Average Sales per Record | 140.99 |
+| Number of Records | 8,523 |
+| Average Rating | 3.97 |
+
+- **Fat content:** Low Fat products contributed 64.60% of total sales and Regular products 35.40%.
+- **Product categories:** Fruits and Vegetables (178.12K), Snack Foods (175.43K) and Household (135.98K) were the top three by sales.
+- **Outlet type:** Supermarket Type1 generated the highest sales (787,549.89, or 65.54% of the total). Grocery Stores had the highest average rating, at about 3.99.
+- **Outlet size:** Medium outlets contributed 42.27% of sales, Small 37.01% and High 20.72%.
+- **Establishment year:** outlets established in 2018 recorded the highest sales (204,522.26 across 1,463 records).
+
+These are observed patterns in the dataset and do not establish cause and effect.
+
+## Limitations
+
+- The establishment-year chart groups sales by the year an outlet opened. It is not a time-series sales trend.
+- "Number of Records" counts product-outlet rows, not distinct products.
+- The dataset has no transaction dates, cost data, customer details or delivery data, so profit, seasonality and customer analysis are not possible.
+
+## Repository Contents
+
+- `blinkit_cleaned.csv` – cleaned dataset
+- `blinkit_analysis.sql` – SQL queries
+- `Blinkit_Dashboard.pbix` – Power BI report
+- `dashboard_preview.png` – dashboard screenshot
+- `README.md` – this file
